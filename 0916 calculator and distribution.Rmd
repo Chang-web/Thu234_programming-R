@@ -1,0 +1,72 @@
+---
+title: "0916 calculator and distribution"
+author: "Chang"
+date: "2021/9/16"
+output: html_document
+---
+
+## R as calculator
+```{r}
+x <- c(1,3,5)
+mean(x)
+median(x)
+sd(x)
+sqrt(x)
+sum(x^2)
+(x-mean(x))/sd(x)
+summary(x)
+IQR(x)
+range(x)
+quantile(x)
+hist(x)
+table(x)
+sort(x)
+#sort(x, 2)
+#find help
+?sort  #can also press F1 at the function
+sort(x, decreasing = TRUE)
+
+
+exp(12)*2^(10)
+exp(12)*2^(10)/factorial(10)
+```
+
+## z-table
+```{r}
+#use pnorm to find quantile
+pnorm(-1,0,1) #0:mean;1:sd
+#use qnorm to find the value at the quantile
+qnorm(0.975,0,1)  #q:quantile
+
+#Exercise: If IQ scores are normally distributed with a mean of 100 and a standard deviation of 15. A person must score in the upper 2% of the population on an IQ test to qualify for membership. So what score must a person have to qualify?
+qnorm(0.98,100,15)
+
+#Exercise: A population has a mean of 200 and a standard deviation of 50. Suppose a sample size 100 is selected.What is the probability that the sample mean will be within ±5 of the population mean?
+pnorm(205,200,50)-pnorm(195,200,50)
+
+```
+
+## t-table
+```{r}
+#q:give quantile to find t-value
+qt(0.975,15) #15:degree of freedom
+#p:give t-value to find quantile
+pt(2.13145, 15)
+```
+
+## binomial distribution
+```{r}
+dbinom(1, 10, 0.25) #d:probability
+#sum of discrete prob.
+sum(dbinom(0:5, 10,0.25))
+#Exersise:A binomial distribution has p = 0.2 and n= 100. What is the probability of 18 to 22 successes?
+sum(dbinom(18:22, 100, 0.2))
+```
+
+## poisson distribution
+```{r}
+dpois(1,2)
+sum(dpois(0:20, 2))
+sum(dpois(3:10, 2))
+
+```
