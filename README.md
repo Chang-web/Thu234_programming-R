@@ -4,4 +4,4 @@
 ## Progress
 
 ### 0916
-  * [in_class](https://github.com/Chang-web/Thu234_programming-R/blob/master/0916-calculator-and-distribution.html)
+  * [in_class](https://chang-web.github.io/Thu234_programming-R/blob/master/0916-calculator-and-distribution.html)
