@@ -1,0 +1,95 @@
+---
+title: "0923 hw"
+author: "Chang"
+date: "2021/9/24"
+output: html_document
+---
+### 1. Generate 100 standard normal random numbers and only keep the observations in the odd positions.
+```{r}
+#rnorm:Generates random numbers from normal distribution
+set.seed(1000)
+randomdeviates <- rnorm(100, 0,1)
+head(randomdeviates, 20)
+#keep the observations in the odd positions
+head(randomdeviates[seq(1,100,2)], 20)
+```
+
+### 1-1. plot the random draw
+```{r}
+hist(randomdeviates, main="Random draws from Std Normal", cex.axis=.8, xlim=c(-4,4))
+```
+
+### 2. Plot the cdf of standard normal distribution
+z <- seq(-5,5,0.01)
+integrand <- function(x) {exp(-(z^2)/2)}
+y <- 1/sqrt(2*pi)*integrate(integrand, lower = -Inf, upper =z)
+```{r}
+set.seed(2000)
+x <-  seq(-3, 3, by = 0.01)
+#pnorm:Cumulative Distribution Function(CDF) under normal
+#qnorm is like an inverse of pnorm
+cumulative <- pnorm(x,0,1)
+plot(x, cumulative, col="darkgreen", xlab="", ylab="Cumulative Probability",type="l",lwd=2, main="CDF of Standard Normal", cex.axis=.8 )
+
+```
+
+### 2-1. Plot the pdf of standard normal distribution
+https://www.r-bloggers.com/2013/02/normal-distribution-functions/
+```{r}
+#draw pdf of standard normal
+set.seed(2000)
+x <-  seq(-3, 3, by = 0.01)
+#put plots together
+par(mfrow=c(1,2), mar=c(3,4,4,2))
+#method1: write function(left)
+mu = 0
+sigma = 1
+y1 <- 1/sqrt(2*pi)*(1/sigma)*exp(-(x-mu)^2/(2*(sigma^2)))
+plot(x,y1, col="darkred",xlab="", ylab="density", main = "PDF of Standard Normal", type = "l",lwd=2, cex.axis=0.8)
+#method2:using dnorm(right)
+#dnorm: Probability Density Function (PDF) under normal
+densities <- dnorm(x, 0, 1) #0:mean; 1:sd
+plot(x, densities, col="darkorange", xlab="", ylab="density", type="l",lwd=2, main="PDF of Standard Normal", cex.axis=.8)
+
+```
+
+### 3. Find xy/(x + yz + 1), where x = 1/6, y = 7.1 and z = 0.251
+```{r}
+x = 1/6
+y = 7.1
+z = 0.251
+x*y/(x + y*z + 1)
+```
+### 4. Find (1+1/n)^n for n=1,2,...,10^5
+```{r}
+n <- 1:10^5
+head((1+1/n)^n)
+```
+
+### 5.Generate 100 standard normal random numbers to be x. Generate 100 binomial random variables with n = 3 and p= 0.5 and let them be y.Report a 8 by 4 table, where x is grouped into 8 subsets by (x<-3; -3<x<-2; -2<x<-1,….x>3)
+```{r}
+x <- rnorm(100, 0, 1)
+y <- rbinom(100, 3, 0.5)
+res <- as.data.frame(cbind(x,y))
+library(dplyr)
+library(magrittr)
+res %<>% mutate(x = 
+                 if_else( x < -3, "a",
+                         if_else(-3 < x & x < -2, "b",
+                                if_else(-2 < x & x < -1, "c",
+                                        if_else(-1 < x & x  < 0, "d", 
+                                                if_else(0 < x & x  < 1, "e",
+                                                        if_else(1 < x  & x < 2, "f",
+                                                                if_else(2 < x & x < 3, "g", "h"))))))))
+table(res$x, res$y)
+
+```
+
+
+
+
+
+
+
+
+

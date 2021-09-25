@@ -1,0 +1,79 @@
+---
+title: "0923 vector"
+author: "Chang"
+date: "2021/9/24"
+output: html_document
+---
+
+## write function in r
+```{r}
+#Clayton function
+u = 0.5
+v = 0.5
+theta = 0.5
+c <- (u^(-theta)+ v^(-theta)-1)^(-1/theta)
+c
+#Gumbel function:
+#從最內部的基礎部分到外部
+g <- exp(-((-log(u))^theta + (-log(v))^theta)^(1/theta))
+g
+#plot pdf of standard normal distribution
+x <- -3:3
+x
+mu = 0
+sigma = 1
+y <- 1/sqrt(2*pi)*(1/sigma)*exp(-(x-mu)^2/(2*(sigma^2)))
+plot(x, y)  #圖形太過粗糙
+
+#seq:by調整間距，length把向量長度等分分割成指定的數目
+#-3:3 等價於 1.seq(-3,3,length = 7) 2.seq(-3, 3, by=1)
+x <-  seq(-3, 3, length = 100)
+y1 <- 1/sqrt(2*pi)*(1/sigma)*exp(-(x-mu)^2/(2*(sigma^2)))
+length(y1)
+plot(x,y1, type = "l")
+
+#pdf of gamma distribution(e.g.chi-sq)
+x <- 0:20
+kappa = 1/2
+theta = 2
+y <- (1/(gamma(kappa)*(theta^kappa)))*(x^(kappa-1))*(exp(-x/theta))
+plot(x,y, type = "l")
+
+```
+
+## 判斷語法
+```{r}
+x <- rnorm(100, 0, 1)
+z <- sort(x)
+head(x,20)
+
+#設定判斷句set up condition
+head(x > 0, 20)  #true or false
+#[]:output under condition
+head(x[x>0], 20) #only keep positive numbers
+x[5] #report the 5th element of x 
+x[1:10] #a vector with length = 10
+#report elements in odd position
+head(x[seq(1,100,2)], 20)
+#report elements in even position
+head(x[-seq(1,100,2)], 20)
+
+head(x[-3], 20) #remove the 3rd element
+#remove 1st to 5th elements
+head(x[-(1:5)], 20) #x[-c(1:5)]
+#remove elements in even position
+head(x[-seq(2,100, 2)],20) # head(x[seq(1,100,2)], 20)
+
+
+#use &(and) |(or)
+head(x > 0 & x < 2, 20)  # 0<x<2 
+head(x[x > 0 & x < 2], 20)
+head(x>2 | x< -2) #abs(x)>2
+sum(x>2 | x< -2) #count the number x satisfying the condition
+x[x>2 | x< -2]
+sum(x[x>2 | x< -2])
+
+```
+
+
+
