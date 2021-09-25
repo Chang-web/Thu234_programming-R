@@ -5,7 +5,9 @@
 
 ### 0916
   * [in_class](https://chang-web.github.io/Thu234_programming-R/0916/0916-calculator-and-distribution.html)
-
+### 0923
+  * [in_class](https://chang-web.github.io/Thu234_programming-R/0916/0916-calculator-and-distribution.html)
+  * [exercise]()
 
 
 ## Online resources
