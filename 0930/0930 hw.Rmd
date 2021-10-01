@@ -1,0 +1,79 @@
+---
+title: "0930 hw"
+author: "Chang"
+date: "2021/9/30"
+output: html_document
+---
+
+### 1. matrix 
+```{r}
+# t(array(1:10, dim = c(5, 2)))
+matrix(1:10, 2, 5,  byrow = T)
+```
+
+### 2. matrix
+```{r}
+matrix(c(1,rep(5,4)), 4, 4, byrow = T)
+```
+
+### 3. 請造一個長度為 100 的 x, 其成員為一個等比數列, 首項是一個unif(-1, 1)的隨機數, 公比為-3. 請計算:
+
+#### A. x 的前 50 值的平均
+```{r}
+library(bsts)
+x <- GeometricSequence(length = 100, 
+                       initial.value = runif(1, -1, 1),
+                       discount.factor = -3)
+mean(x[1:50])
+```
+
+#### B. x 的後 50 值的平均
+```{r}
+# mean(x[51:100])
+mean(x[-c(1:50)])
+```
+
+#### C. x 的偶數位置的中位數
+```{r}
+median(x[-seq(1, 100, 2)])
+```
+
+### 4-1.Generate 𝑋1,𝑋2, … , 𝑋100 from a discrete uniform distribution in [-50, 50]. 
+```{r}
+library(extraDistr)
+set.seed(1)
+x <- rdunif(100, min = -50, max = 50)
+head(x)
+```
+
+### 4-2. 
+```{r}
+if (mean(x[-100] < 0)){
+    y <- rnorm(1, 0, 1)
+} else{
+    y <- rbinom(1, 10, 0.5)
+}
+y
+```
+
+### 5. 請 R 生出一個落在 10~99 之間的整數(記為 x, 不可以偷看)，自己給定一個數值. 若自己猜的數字介於 x 正負 5 之內，顯示 接近了；大於 x ，顯示 太大了；小於 x ，顯示 太小了；剛好等於 x，顯示 答對了。
+```{r}
+set.seed(8)
+x <- sample(10:99, 1)
+guess <- sample(10:99, 1)
+if (guess == x){
+    y <- c(sprintf("x = %d", x), sprintf("guess = %d", guess))
+    print("答對了")
+} else if (guess < x + 5 & guess > x - 5){
+    y <- c(sprintf("x = %d", x), sprintf("guess = %d", guess))
+    print("接近了")
+} else if (guess > x){
+    y <- c(sprintf("x = %d", x), sprintf("guess = %d", guess))
+    print("太大了")
+} else {
+    y <- c(sprintf("x = %d", x), sprintf("guess = %d", guess))
+    print("太小了")
+}
+y
+
+```

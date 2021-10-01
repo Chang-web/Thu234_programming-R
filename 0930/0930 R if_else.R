@@ -1,0 +1,159 @@
+# practice 1 
+# Generate 50 standard normal numbers and remove observations whose values are 
+#greater than 2. Save the result to be a new vector
+n = 50
+x <- rnorm(n, 0, 1) # normal distribution
+temp <-  x < 2 # temp:暫時的，右方設定判斷句(留下x < 2的)
+y <- x[temp] # 留下指定的x值
+head(y)
+
+# practice 2
+#Generate 50 standard normal numbers and 
+#keep observations whose values are greater 
+#than the sample mean±2*S.D.
+set.seed(1)
+n = 50
+x <- rnorm(n, 0, 1)
+xbar <- mean(x)
+std <- sd(x)
+temp = x > xbar+2*std | x < xbar+2*std
+y <- x[temp]
+head(y)
+
+# rep(重複的東西, 重複次數)
+rep(1:4, 2)
+z <- rep(NA, n)
+head(z)
+
+# NULL:不清楚資料長度時使用，逐次加入合併
+t <-  NULL # 空集合
+t <-  c(z, t) # t被z佔據
+t
+
+# t與50個binomial亂數合併
+t <- c(t, rbinom(n, 0, 0.5)) 
+t
+length(t)
+
+# matrix(元素值, #rows, #columns)
+m <- matrix(NA, 2, 5)
+m
+# array(元素值, 維度)
+w <- array(NA, dim = c(2, 5, 2))
+w
+# exercise 1:
+# by matrix()
+w0 <- matrix(1:10, 2,5 , byrow = T)
+w0
+# by array()
+w1 <- array(1:10, dim = c(5,2))
+t(w1)
+
+# 分號的功能相當於換行
+x <- 0.5
+y <- 0    # x <- 0.5; y <- 0
+### 條件句: if_else
+if (x > 3){
+  y <- 1
+} else{
+  y <- 2
+}
+y
+### use ifelse to do the same thing
+ifelse(x > 3, 1, 2)
+
+
+# Practice 3:
+# absolute value
+x <- -3
+# y <- 0  一開始可以不用指定新變數
+if (x >= 0){
+    y <- x
+} else{
+    y <- abs(x)
+}
+y
+
+# evaluate f(5)
+x <- 5
+# y <- 0
+if (x < 0){
+    y <- 0
+} else{
+    y <- x
+}
+y 
+
+# find f(x) for x is a uniform number in (-2, 2)
+#set.seed(2)
+x <- runif(1, min = -2, max = 2)
+if (x < 0){
+  0 
+} else{
+  x 
+}
+
+#小學生 數學&閱讀成績
+#透過sample()找60~100取數學分數，80~100取閱讀分數
+#條件:數學成績 >= 90 且 閱讀成績 >= 95，回傳good，否則keep going
+math <- sample(60:100, 1)
+reading <- sample(80:100, 1)
+if (math >= 90 & reading >= 95){
+    score <- c(math, reading)
+    print("good")
+} else{
+    score <- c(math, reading)
+    print("keep going")  
+}
+score
+
+### 兩個以上條件句
+x <- runif(1, -5, 5)
+if (x < 0){
+    y <- 0
+} else if (x < 1 & x >= 0){
+    y <- x
+} else{
+    y <- 1
+}
+y
+
+#小學生 數學&閱讀成績
+#透過sample()找60~100取數學分數，80~100取閱讀分數
+#條件:如果數學 >= 90 且閱讀 >= 95，回傳100，只有閱讀 >= 95，回傳80，其他回傳60
+math <- sample(60:100, 1)
+reading <- sample(80:100, 1)
+if (math >= 90 & reading >= 95){
+  score <- c(math, reading)
+  print("100")
+} else if (reading >= 95){
+  score <- c(math, reading)
+  print("80") 
+} else {
+  score <- c(math, reading)
+  print("60")
+}
+score
+
+### 條件有先後順序:先看閱讀再看數學
+# 把原數值加碼儲存在原變數
+math <- sample(60:100, 1)
+reading <- sample(80:100, 1)
+if (reading >= 95){
+    score <- c(math, reading)
+    result = 80
+}
+if (math >= 95){
+    score <- c(math, reading)
+    result = result + 20
+} else {
+    score <- c(math, reading)
+    result = 60
+}
+score
+result
+
+
+
+
+
