@@ -1,0 +1,172 @@
+---
+title: "1007_R_function"
+author: "Chang"
+date: "2021/10/8"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+### review
+```{r}
+x <- 10
+if(x < 0){
+  y = 1
+} else if(x > 0 & x < 1){
+  y = 0
+} else{
+  y = 3
+}
+y
+```
+
+
+#### array/matrix
+```{r}
+A <- matrix(5:10, 2, 3)
+A[2,2] # the element
+A[ ,2] # the second column
+A[2, ] # the second row
+
+
+# combine matrix by row
+B <- matrix(1:6, 2, 3)
+C <- rbind(A,B)
+C
+
+# 列向量長度不同，無法完整對應，程式自動裁切多餘的向量
+rbind(C, 1:4)  
+D <- rbind(C, 2:4)
+D
+
+# add a column
+E <- cbind(D, 1:5) 
+E
+
+# apply
+apply(E, 2, min) # 2:column；沿著行找最小值
+apply(E, 1, max) # 1:column；沿著列找最大值
+
+```
+
+#### exercise
+```{r}
+M <- matrix(1:10, 2, 5)
+N <- matrix(11:20, 2, 5)
+P <- rbind(M, N)
+P
+# find margin
+sum(P[ ,1]) # margin in 1st column
+apply(P, 1, sum) # find row margin
+apply(P, 2, sum) # find column margin 
+```
+
+### exercise A
+```{r}
+x <- runif(200, -10, 10)
+epsilon <- rnorm(200, 0, 8)
+f <- function(x,epsilon){
+  1 + 0.5*x + epsilon
+}
+y <- f(x, epsilon)
+```
+
+#### (1) Find the correlation of two variables X and Y
+```{r}
+cor(y, x)
+```
+
+
+#### (2) find Sxx
+```{r}
+f1 <- function(x){
+  sum((x - mean(x))^2)
+}
+res1 <- f1(x)
+res1
+```
+
+#### (3) find Sxy
+```{r}
+f2 <- function(x, y){
+  sum((x - mean(x))*(y - mean(y)))
+}
+res2 <- f2(x,y)
+res2
+```
+
+#### (4) find Sxy/Sxx
+```{r}
+b <- res2/res1
+b
+```
+
+#### (5) find yhat
+```{r}
+a <- mean(y) - b*mean(x)
+yhat <- a + b*x
+head(yhat)
+```
+
+
+### Functions:exercise B
+```{r}
+## Define function
+# Usage:
+#f <- function(x){
+#  工作項目
+#  return(y)
+#}
+
+f <- function(x){
+  x^3 - x + 1
+}
+f(sqrt(6))
+
+# another method
+# S <- function(a, r, n){
+#   y = sum(a*r^(seq(0, n-1)))
+#   return(y)
+# }
+S <- function(a,r,n){
+  y = sum(a*r^(seq(1,n)-1))
+  return(y)
+}
+S(2.1, 0.5, 100)
+
+```
+
+#### function of mean and variance
+```{r}
+mean.var.fun <- function(x){
+  n <- length(x)
+  mx <- sum(x)/n
+  a <- (x - mx)^2
+  vx <- sum(a)/(n-1)
+  ans <- list(mx,vx)
+  names(ans) <- c("mean", "var")
+  return(ans)
+}
+x <- 1:100
+result <- mean.var.fun(x)
+result$mean
+result$var
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

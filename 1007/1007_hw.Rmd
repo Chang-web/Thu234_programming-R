@@ -1,0 +1,196 @@
+---
+title: "1007_hw"
+author: "Chang"
+date: "2021/10/8"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+### 1
+丟 3 顆公平的骰子，寫一 R 函式，印出總和並做如下判別: 如果和大於13點，則印出「Good」，反之印出「Good luck」。
+```{r}
+x <- sum(sample(c(1:6), 3))
+g <- function(x){
+  ifelse(x > 13, "Good", "Good luck")
+}
+result <- g(x)
+result
+x
+```
+
+
+### 2
+```{r}
+score <- sample(0:100, 50, replace = TRUE)
+h <- function(score){
+  sqrt(score)*10
+}
+newscore <- h(score)
+```
+
+
+#### (1) 分數調整前被當學生之比例(raw)
+```{r}
+# method 1
+temp <- score < 60
+fail.raw <- sum(temp)/50
+fail.raw
+
+# method 2
+temp <- score < 60
+a <- 1:50
+fail.raw2 <- length(a[temp])/50
+fail.raw2
+
+library(tidyverse)
+# method 3
+total_fail <- as.data.frame(score) %>% filter(score < 60) %>% tally()
+fail.raw3 <- as.numeric(total_fail/50)
+fail.raw3
+```
+
+#### (2) 分數調整前最高之成績(max.raw)
+```{r}
+max.raw <- max(score)
+max.raw
+
+```
+
+
+#### (3) 分數調整後被當學生之比例(fail.per)
+```{r}
+# method 1
+temp1 <- newscore < 60
+fail.per <- sum(temp1)/50
+fail.per
+
+
+# method 2
+temp1 <- newscore < 60
+a <- 1:50
+fail.per2 <- length(a[temp1])/50
+fail.per2
+
+# method 3
+total_fail2 <- as.data.frame(newscore) %>% filter(newscore < 60) %>% tally()
+fail.per3 <- as.numeric(total_fail2/50)
+fail.per3
+
+```
+
+
+#### (4) 分數調整後最高之成績(max.curved)
+```{r}
+max.curved <- max(newscore)
+max.curved
+```
+
+### 3
+```{r}
+S <- function(n){
+  a <- (-1)^seq(0,n-1)
+  sum(a*(1/(2*(1:n) - 1)))
+}
+n <- 1000
+ans <- S(n)
+ans
+```
+
+### 4
+調分規則有以下三種，試寫一 R 函式(假設命名為 final.score)，輸出每位同學上述三種調分後的成績結果。
+
+    A. 維持原始分數不調分，但高於 55 分，低於 60 分者，加至 60 分及格。
+    B.「開根號再乘以 10」。
+    C. 調成學期總成績最後之平均為 65 分，但高於 100 分者以 100 計。
+
+```{r}
+orig.score <- sample(0:100, 55, replace = TRUE)
+# plan A
+final.score1 <- function(orig.score){
+  ifelse(orig.score > 55 & orig.score < 60, 60, orig.score)
+}
+A <- final.score1(orig.score)
+
+# plan B
+final.score2 <- function(orig.score){
+  sqrt(orig.score)*10
+}
+B <- round(final.score2(orig.score),0)
+
+# plan C
+final.score3 <- function(orig.score){
+  ifelse(mean(orig.score) < 65, 
+         final.score <-orig.score + (65-mean(orig.score)),
+         orig.score)
+  ifelse(final.score > 100, 100, final.score)
+}
+C <- round(final.score3(orig.score), 0)
+```
+
+
+#### (1) 將final.score儲存為grade
+```{r}
+grade <- cbind(A, B, C)
+head(grade)
+```
+
+
+#### (2) 請用grade為這 55 位學生計算出他們調分後最優的分數
+```{r}
+best <- apply(grade, 1, max)
+grade <- cbind(grade, best)
+head(grade)
+```
+
+#### (3) 請用grade為這 55 位學生計算出他們調分後最差的分數
+```{r}
+worst <- apply(grade, 1, min)
+grade <- cbind(grade, worst)
+head(grade)
+
+```
+
+#### (4) 請用grade為這 55 位學生標示出哪個調分方式對他們最有利
+```{r}
+grade <- as.data.frame(grade)
+plan <- ifelse(grade$best == grade$A, "A", 
+               ifelse(grade$best == grade$B, "B", 
+                      "C"))
+grade <- cbind(grade, plan)
+head(grade, 10)
+```
+
+```{r}
+# 跑不出結果
+if(grade$best == grade$A){
+  "A"
+} else if(grade$best == grade$B){
+  "B"
+} else{
+  "C"
+}
+```
+
+### 5
+寫一R函式(命名為Heron)計算三角形之面積，其中輸入為三角形之三邊長，輸出此三角形之面積。程式執行，三邊長以7,8,9為範例。
+
+```{r}
+Heron <- function(a, b, c){
+  s <- (a + b + c)/2
+  A <- sqrt(s*(s - a)*(s - b)*(s - c))
+  return(A)
+}
+Heron(7, 8, 9)
+```
+
+
+
+
+
+
+
+
+
+
