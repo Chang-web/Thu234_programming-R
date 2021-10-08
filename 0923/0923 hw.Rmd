@@ -20,16 +20,18 @@ hist(randomdeviates, main="Random draws from Std Normal", cex.axis=.8, xlim=c(-4
 ```
 
 ### 2. Plot the cdf of standard normal distribution
-z <- seq(-5,5,0.01)
-integrand <- function(x) {exp(-(z^2)/2)}
-y <- 1/sqrt(2*pi)*integrate(integrand, lower = -Inf, upper =z)
 ```{r}
 set.seed(2000)
-x <-  seq(-3, 3, by = 0.01)
+par(mfrow=c(1,2))
+z <-  seq(-3, 3, by = 0.01)
 #pnorm:Cumulative Distribution Function(CDF) under normal
 #qnorm is like an inverse of pnorm
-cumulative <- pnorm(x,0,1)
-plot(x, cumulative, col="darkgreen", xlab="", ylab="Cumulative Probability",type="l",lwd=2, main="CDF of Standard Normal", cex.axis=.8 )
+cumulative <- pnorm(z,0,1)
+plot(z, cumulative, col="darkgreen", xlab="", ylab="Cumulative Probability",type="l",lwd=2, main="CDF of Standard Normal", cex.axis=.8 )
+
+library(mosaicCalc)
+DF <- antiD(exp(-(z^2)/2) ~ z)
+plot(DF(z), xlab="", ylab="Cumulative Probability",type="l",lwd=2, main="CDF of Standard Normal", cex.axis=.8 ,col="orange")
 
 ```
 
@@ -67,11 +69,20 @@ head((1+1/n)^n)
 ```
 
 ### 5.Generate 100 standard normal random numbers to be x. Generate 100 binomial random variables with n = 3 and p= 0.5 and let them be y.Report a 8 by 4 table, where x is grouped into 8 subsets by (x<-3; -3<x<-2; -2<x<-1,….x>3)
+
+#### 找出同時滿足特定條件的值:以 0 < x & x  < 1 和  y == 2 為例
 ```{r}
 x <- rnorm(100, 0, 1)
 y <- rbinom(100, 3, 0.5)
+temp <- 0 < x & x  < 1
+temp1 <- y == 2
+sum(ifelse(temp == T  & temp1 == T, 1, 0))
+```
+
+#### 列表呈現各種情況的值
+```{r}
 res <- as.data.frame(cbind(x,y))
-library(dplyr)
+library(tidyverse)
 library(magrittr)
 res %<>% mutate(x = 
                  if_else( x < -3, "a",
@@ -83,8 +94,11 @@ res %<>% mutate(x =
                                                                 if_else(2 < x & x < 3, "g", "h"))))))))
 table(res$x, res$y)
 
+res %>% 
+  group_by(x,y) %>%
+  summarise(freq = n()) %>% 
+  spread(y, freq) 
 ```
-
 
 
 
