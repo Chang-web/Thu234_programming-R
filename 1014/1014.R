@@ -1,0 +1,103 @@
+
+##### 1014
+
+## cat() and print()
+
+## review:
+# 1. names(x) <- c("a", "b", ...) 命名
+# 2. return 後面的工作會被ignore
+# 3. return 
+
+## exercise A:
+f.fun <- function(x, c){
+  if (x < -1){
+    -c
+  } else if (-1 <= x  | x <= 1){
+    x
+  } else{
+    c
+  }
+}
+c(f.fun(-5,1), f.fun(1, 1), f.fun(5, 1))
+c(f.fun(-5, 10), f.fun(1, 10), f.fun(5, 10))
+
+## exercise B: 
+# Write a function in R to get a size n of data set follows a multivariate normal distribution with mean (0, 0) and covariance matrix is (1,ro,ro,1)
+# the input is (n,ro)
+# the output is a data matrix with dim= n by 2
+# In addition, report the sample correlation, sample means and sample variances for each variable
+n <-  10
+ro <-  0.5
+covm <- matrix(c(1, ro, ro, 1), nrow = 2, ncol = 2)
+result <- mvtnorm::rmvnorm(n, mean = c(0,0), sigma = covm)
+colnames(result) <- c("x", "y")
+result <- as.data.frame(result)
+result
+cor(result$x,result$y)
+mean(result$x)
+mean(result$y)
+var(result$x)
+var(result$y)
+
+## exercise C
+# (a)
+m <- 1:20
+x <- m[seq(1, 20, 2)]
+y <- m[-seq(1, 20, 2)]
+f <- function(x, y){
+  z <- x + y
+  return(prod(z))
+}
+f(x,y)
+
+# (b)
+f1 <- function(x, y){
+   sum(x / y)
+  }
+f1(x,y)
+
+# (c)
+f2 <- function(x, y){
+    sum(x^3*y^2)
+}
+f2(x,y)
+
+## exercise D
+# (a)
+n <- 100
+k <- seq(1:n)
+x <- k[seq(1, n, 2)]
+y <- k[-seq(1, n, 2)]
+f.fun <- function(x, y){
+  z <- x + y
+  return(prod(z))
+}
+f.fun(x,y)
+
+# (b)
+f.fun1 <- function(x, y){
+  sum(x / y)
+}
+f.fun1(x,y) 
+
+# (c)
+f.fun2 <- function(x, y){
+  sum(x^3*y^2)
+}
+f.fun2(x,y)
+
+## exercise E
+score <- sample(1:100, 50, T)
+my.test <- function(score){
+  if (length(score[score >= 60]) > 25 & length(score[score > 90]) >= 1){
+    print(
+      paste("本次成績不調分，平均分數為", mean(score), sep = "")
+      )
+  } else{
+    print(
+      paste("本次成績會調分，不及格比例為", round(length(score[score < 60])/50, 2)*100, "%", sep = "")
+      )
+  }
+}
+my.test(score)
+

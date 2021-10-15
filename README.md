@@ -16,6 +16,9 @@
   * [exercise](https://chang-web.github.io/Thu234_programming-R/1007/1007_hw.html)
   * [prequiz](https://chang-web.github.io/Thu234_programming-R/1007/pre_quiz.html)
 ### W5 1014
+  * [exercise](https://chang-web.github.io/Thu234_programming-R/1014/1014_review_and_exercise.html)
+  * [quiz_1]
+### W6 1021
 
 
 ## Online resources
