@@ -22,8 +22,8 @@
   * [in_class](https://chang-web.github.io/Thu234_programming-R/1021/1021_Loops.html)
   * [exercise](https://chang-web.github.io/Thu234_programming-R/1021/1021_exercise.html)
 ### W7 1028 Loop_while
-  * [in_class](https://chang-web.github.io/Thu234_programming-R/1021/1028-R-while.html)
-  * [exercise](https://chang-web.github.io/Thu234_programming-R/1021/1028_HW.html)
+  * [in_class](https://chang-web.github.io/Thu234_programming-R/1028/1028-R-while.html)
+  * [exercise](https://chang-web.github.io/Thu234_programming-R/1028/1028_HW.html)
 ### W8 1104 Loop_repeat
   * [in_class](https://chang-web.github.io/Thu234_programming-R/1104/1104_repeat-and-next.html)
 ### W9 1111 MIDTERM
