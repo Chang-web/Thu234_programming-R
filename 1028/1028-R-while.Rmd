@@ -1,0 +1,175 @@
+---
+title: "1028_Rwhile"
+author: "Chang"
+date: "2021/11/4"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+### Review for loops
+```{r}
+A <- matrix(NA, 3, 4)
+for(i in 1:3){
+  
+# 可以再新增任務
+  
+for(j in 1:4){
+  A[i,j] = i + j 
+  }
+}
+A
+
+### factorial
+
+f1 <-  function(n){
+  p = 1
+  for (x in 1:n){
+    p = p*x
+  }
+  return(p)
+}
+f1(10)
+
+# take log
+# 計算連乘:先取對數再取指數
+f2 <- function(n){
+  temp <- 0
+  for(k in 1:n){
+  temp <- log(k) + temp
+  }
+  y<- exp(temp)
+  return(y)
+}
+f2(10)
+```
+
+### while-連加
+```{r}
+
+g <- function(n){ 
+  x <- 0
+  s <- 0
+  while(x<=n){ 
+  s<- s+x 
+  x<- x+1 
+  }
+  s
+}
+g(5)
+```
+### exercise 
+假設身邊有一個硬幣(正面發生的機率為0.005)丟擲此硬幣, 直到第一個正面出現才停止紀錄停止時, 已丟擲的次數, 記為X。
+
+```{r}
+set.seed(20)
+flip <- function(p){
+  x <- 1
+  y <- rbinom(1, 1, p)
+  while(y== 0){
+    y <- rbinom(1, 1, p)
+    x <- x + 1
+  }
+  return(x)
+}
+p <- 0.005
+flip(p)
+
+### function and while
+set.seed(20)
+g <- function(p){
+  x <- 1
+  y <- rbinom(1,1,p)
+  while(y == 0){
+    x <- x + 1
+    y <- rbinom(1, 1, p)
+  }
+  return(x)
+}
+g(0.005)
+```
+### exercise 1
+假設英檢成績為 score = sample(60:100, 1)若成績沒有超過85, 則必須準備下次重考。請統計最後考了幾次測驗才達標。
+```{r}
+score <-  sample(60:100, 1)
+score
+x <- 1
+while(score < 85){
+  score <-  sample(60:100, 1)
+  print(score)
+  x <- x + 1
+}
+x
+```
+### exercise 2
+請找出 第100個偶數發生的位置
+```{r}
+# for 
+set.seed(21)
+n <- 1000
+number <- sample(0:100, n, replace = T)
+result = NULL
+for(i in 1:n){
+  a <- number[i] %% 2
+  if(a == 0){
+  result <- c(result, i)
+  }
+}
+result[100]
+
+# while-1
+set.seed(21)
+n <- 1000
+result = NULL
+number <- sample(0:100, n , replace = T)
+i <- 0
+while(sum(result) < 100){
+  i <- i + 1
+  b <- number[i] %% 2 
+  if(b == 0){
+    result <- c(result, T)
+  }
+}
+i
+
+# while-2
+n <- 1000
+set.seed(21)
+number <- sample(0:100, n , replace = T)
+i <- 1
+y <- number[i]%%2
+s <- 1*(y==0)
+while(s < 100){
+  i <- i + 1
+  y <- number[i]%%2
+  s <- s + 1*(y==0)
+}
+i
+```
+
+### plot
+```{r}
+library(MASS)
+mu = c(0,0)
+p = 0.5
+n= 100
+sigma = matrix(c(1, p, p, 1), 2, 2) #它必須是正定矩陣
+data = mvrnorm(n, mu, sigma)
+x = data[,1]
+y = data[,2]
+n <- length(x)
+plot(-4:4, -4:4, type = "n", # 空座標
+     xlab = "x", ylab = "y")
+abline(0,1, lty =  3) # Add Straight Lines to a Plot
+for(i in 1:n){
+  points(x[i], y[i], pch = 20)
+}
+```
+  
+  
+  
+
+
+```
+

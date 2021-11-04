@@ -1,0 +1,286 @@
+
+#### 1021 Lecture 06: Loop
+
+#### function
+x1 <- function(x){
+  mu <- mean(x)
+  std <- sd(x)
+  tab <- table(x) # frequency table
+  return(list(tab,mu,std))
+}
+
+# 連續型每個結果的frequency一定是1，table沒有意義
+x1(rnorm(100, 0, 2)) # X~N(0,2)
+x1(sample(0:100, 50, replace = T))
+
+# names for list
+x2 <- function(x){
+  mu <- mean(x)
+  std <- sd(x)
+  tab <- table(x) # frequency table
+  y <- list(tab,mu,std)
+  names(y) <- c("freq", "average", "std")
+  return(y)
+}
+x2(sample(0:100, 50, replace = T))
+
+# 把結果命名，可以用$抓取結果
+x3 <- function(x){
+  mu <- mean(x)
+  std <- sd(x)
+  tab <- table(x) # frequency table
+  y <- list(tab,mu,std)
+  names(y) <- c("freq", "average", "std")
+  return(y)
+}
+output <- x3(sample(0:100, 50, replace = T))
+output$average
+
+
+# exercise E: cat()
+score <- sample(1:100, 50, T)
+my.test <- function(x){
+  n <- length(x)
+  a <- sum(x >= 60)
+  b <- sum(x >= 90)
+  c <- mean(x)
+  d <- sum(x < 60)
+  
+  if(a/n > 0.5 & b > 0){
+    cat("本次成績不調分，平均分數為", c, "\t")
+  } else{
+    cat("本次成績會調分，不及格比例為", (d/n)*100, "%")
+  }
+}
+my.test(score)
+
+# exercise E: paste()
+score <- sample(1:100, 50, T)
+my.test1 <- function(score){
+  n <- length(score)
+  mean <- mean(score)
+  a <- sum(score >= 60)
+  b <- sum(score > 90)
+  c <- sum(score < 60)
+  if (a > n/2 & b >= 1){
+    print(
+      paste("本次成績不調分，平均分數為", mean, sep = "")
+    )
+  } else{
+    print(
+      paste("本次成績會調分，不及格比例為", c/n*100, "%", sep = "")
+    )
+  }
+}
+my.test1(score)
+
+#### Loop
+
+for(i in 1:10){
+  print(i^2)
+}
+
+# exercise 1:重複列印出偶數數列(從2起跳) 的平方數, 執行100次
+
+for(i in 1:100){
+  print((2*i)^2)
+}
+
+for( i in seq(2, 200, by = 2)){
+  print(i^2)
+}
+
+
+# exercise 2: 請從標準常態模型生成出100個觀察值
+# NULL
+n <- 100
+a <- NULL
+for(i in 1:n){
+  a <- c(a, rnorm(1, 0, 1))
+  # print(a)
+}
+a
+
+
+# exercise 3:請統計有多少個score分別等於80, 85, 90, 95, 100
+score <-  sample(80:100, 10000, replace = T)
+for(i in 0:4){
+  print(sum(score == 80 + 5*i))
+}
+
+# exercise 3: give a null vector to save results
+z <- seq(80, 100, by = 5)
+result <- rep(NA, length(z))
+for(i in 1:length(result)){
+  result[i] <- sum(score == z[i])
+}
+result
+
+# exercise in class:create matrix
+#[,1] [,2] [,3] [,4] [,5]
+#[1,]    1    4    9   16   25
+#[2,]    4    9   16   25   36
+#[3,]    9   16   25   36   49
+C <- matrix(NA, 3, 5)
+for(i in 1:3){
+  for(j in 1:5){
+    C[i,j] <-  (i + j - 1)^2
+  }
+}
+
+
+# exercise in class
+B <- matrix(NA, 3, 5)
+for(i in 1:3){
+  for(j in 1:5){
+    B[i,j] <-  j^(i+1)
+  }
+}
+
+# exercise 4
+library(MASS)
+mu = c(0,0)
+p = 0.5
+n= 100
+sigma = matrix(c(1, p, p, 1), 2, 2) #它必須是正定矩陣
+data = mvrnorm(n, mu, sigma)
+x = data[,1]
+y = data[,2]
+n <- length(x)
+plot(-4:4, -4:4, type = "n", xlab = "x", ylab = "y")
+for(i in 1:n){
+  points(x[i], y[i], pch = 20)
+}
+
+
+# exercise 5 
+# 先在定義域做切割
+# 先存成矩陣
+# persp(x, y, z)
+x <- seq(-2,2, by = 0.001)
+y <- seq(-2,2, by = 0.001)
+D <- matrix(NA, length(x), length(y))
+for(i in 1:length(x)){
+  for(j in 1:length(y)){
+    D[i,j] <- x[i]^2 + y[j]^2
+  }
+}
+persp(x,y,D)
+
+# exercise 6 
+#用for逐一檢查每個數值是否為偶數
+n <- 1000
+number <- sample(0:100, n, replace = T)
+result = NULL
+for(i in 1:n){
+  a <- number[i] %% 2
+  if(a == 0){
+    result <- c(result, i)
+  }
+}
+result[100]
+
+#### exercise 7-1
+#[1] 1
+#[1] 1 2
+#[1] 1 2 3
+#[1] 1 2 3 4
+#[1] 1 2 3 4 5
+# sol-1: 橫向作圖
+for(i in 1:5){
+  print(seq(i))
+}
+
+# sol-2
+a <-  c()
+for(i in 1:5){
+  a = c(a, i)
+  print(a)
+}
+
+# sol-3: TA
+for (i in c(1:5)){
+  for (j in c(1:i)){
+    temp = seq(1,j,1)
+  }
+  print(temp)
+}
+
+#[1] 1
+#[1] 2 2
+#[1] 3 3 3
+#[1] 4 4 4 4
+#[1] 5 5 5 5 5
+# sol-1 縱向作圖
+a <-  c()
+for(i in 1:5){  # row
+  for(j in 1:i){  # column
+    a = c(a, i)
+  }
+  print(a)
+  a <-  c()
+}
+
+## sol-2 橫向作圖
+a <-  c()
+for(i in 1:5){
+  a = c(a, rep(i, i))
+  print(a)
+  a <-  c()
+}
+
+
+#### exercise 7-2
+#     1
+#    333
+#   55555
+#  7777777
+# 999999999
+
+for(i in 1:5){
+  cat(paste0(strrep(" ", 5-i), strrep(2*i-1, 2*i-1), "\n"))
+}
+
+# double for loop by TA:
+num = seq(1,9,by=2)
+for (i in num){
+  max_num =(max(num)-i)/2
+  if (i != max(num)){
+    temp = rep(i,i)
+    te = c()
+    for (j in c(1:max_num)){
+      te = c(te," ")
+      #print(te)
+    }
+    cat(te,temp," ","\n")
+  }else{
+    cat(rep(i,i))
+  }
+}
+
+#### diamonds
+for(i in c(1:5, 4:1))
+  cat( paste0(strrep(" ", 5 - i), strrep("* ", i), "\n") )
+
+diamond <- function(max) {
+  
+  # Upper triangle
+  space <- max - 1
+  for (i in 0:(max - 1)) {
+    for (j in 0:space) cat(" ")
+    for (j in 0:i) cat("* ")
+    cat("\n")
+    space <- space - 1
+  }
+  
+  # Lower triangle
+  space = 1;
+  for (i in (max - 1):1) {
+    for (j in 0:space) cat(" ")
+    for (j in 0:(i - 1)) cat("* ")
+    cat("\n")
+    space <- space + 1
+  }
+}
+diamond(5)
+

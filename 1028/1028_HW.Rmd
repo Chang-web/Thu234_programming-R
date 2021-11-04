@@ -1,0 +1,199 @@
+---
+title: "1028_exercise"
+author: "Chang"
+date: "2021/11/4"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+[more exercises](https://chang-web.github.io/Fri234_business-analysis-in-R/1015/1015_exercise.html)
+
+### 1.
+大樂透為 1∼42 個號碼一次抽出 6 個號碼為一組 (取出不放回)。請模擬抽獎 100 次 (組)，之後請統計每個數字(1∼42) 出現的次數。
+```{r}
+library(tidyverse)
+set.seed(6)
+n <- matrix(NA, 100, 6)
+for(i in 1:100){
+  n[i, ] <- sample(1:42, 6, replace = F)
+}
+head(n)
+as.data.frame(table(n)) %>% head()
+```
+```{r}
+# TA
+set.seed(6)
+temp <- c()
+for (i in c(1:100)){
+  temp <- c(temp,sample(1:42,6,replace=FALSE))
+}
+result <- c()
+for (i in c(1:42)){
+  result <- rbind(result, c(i,sum(temp==i)))
+}
+colnames(result) <-  c("Number","Frequency")
+head(result)
+
+
+```
+### 2.
+請用 for(兩次)列印出九九乘法表
+![](D:/Chang-web/graph/nine.jpg)
+```{r}
+for (i in 1:9){
+  for(j in 1:6){
+    cat(i, "*", j, "=", i*j, "\n")
+  }
+  cat("\n")
+}
+```
+
+### 2-1. 
+while and for 
+```{r}
+i <- 1
+while(i <= 9){
+  for(j in 1:6){
+   cat(i, "*", j, "=", i*j, "\n")
+  }
+  cat("\n")
+  i <- i + 1
+}
+```
+
+### 2-2. 
+two repeat and two break
+```{r}
+i <- 1
+repeat{
+  j <- 1
+  repeat{
+    if (j >= 7) break
+    cat(i, "*", j, "=", i*j, "\n")
+    j <- j + 1
+  }
+  i <-i + 1
+  if (i >= 10) break
+  cat("\n")
+}
+
+
+```
+
+
+### 3.
+```{r}
+S <- 1
+i <- 1
+while(S <= 1000 & (S + i^1.1 > 1000)== F ){
+  i <- i + 1
+  S <- S + i^1.1
+  #cat(S, "\t")
+}
+cat("sum = ",S,",","i = ",i)
+
+```
+
+```{r}
+# TA
+summation_seq <- c()
+n <- 1
+while(isTRUE(sum(seq(1:(n+1))^1.1)>1000 & sum(seq(1:n)^1.1)<=1000)==FALSE){
+  n <- n+1
+  summation_seq[n] <-  sum(seq(1:n)^1.1)
+  
+}
+cat("sum = ",summation_seq[37],",","n = ",n)
+
+
+```
+
+```{r}
+# verify
+k <- function(n){
+  y <- 0
+  for(i in 1:n){
+  y <- y + i^1.1
+  }
+  return(y)
+}
+k(37)
+```
+
+### 4. 
+一個銅板出現正面機率為 p = 0.005 。 利用 while 統計此銅板需丟幾次才會出現三次正面。
+```{r}
+# while
+set.seed(8)
+p <- 0.005
+head <- rbinom(1,1,p)
+x <- 1
+while(head < 3){
+  x <- x + 1
+  toss <- rbinom(1,1,p)
+  head <- toss + head
+}
+x
+
+#參考商業分析10/15 exercise 6
+set.seed(8)
+toss <- c()
+x <- 0
+while(sum(toss) < 3){
+  x <- x + 1
+  toss[x] <- rbinom(1,1,p)
+}
+x
+```
+
+```{r}
+# repeat
+set.seed(8)
+x <- 0
+z <- 0
+repeat{
+  x <- x + 1
+  y <- rbinom(1, 1, 0.005)
+  z <- z + y
+  if(z == 3) break
+}
+x
+```
+
+### 5. 
+設一硬幣出現正面的機率是 。出現正面就得到 1 元、反面則賠 1 元。寫出一程式(命名為 game = function(n,p))模擬玩 n 次的所得的錢。
+```{r}
+set.seed(77)
+game <-  function(n,p){
+  y <- rbinom(n,1,p)
+  gain <- c()
+  for(i in 1:n){
+    gain[i] <- ifelse(y[i] == 1, 1, -1)
+    i <- i + 1
+  }
+  result <- list(y, gain, sum(gain))
+  names(result) <- c("toss", "gain", "total")
+  return(result)
+}
+p <- 0.5
+n <- 10
+game(n,p)
+
+```
+
+```{r}
+# TA
+set.seed(77)
+result = 0
+game1<-function(n,p){
+  result = rbinom(n,1,p)
+  return(sum(result)*1+(n-sum(result))*(-1))
+}
+p <- 0.5
+n <- 10
+game1(n,p)
+
+
+```
