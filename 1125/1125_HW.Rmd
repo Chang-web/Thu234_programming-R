@@ -1,0 +1,163 @@
+---
+title: "1125_HW"
+author: "Chang"
+date: "2021/12/4"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+### exercise A
+![](D:/Chang-web/graph/uppersum.jpg)
+```{r}
+x <- seq(0,1,by = 0.01)
+y <- 1-x^2
+par(xaxs = "i", yaxs = "i") # "i":原始數據的最小值到最大值是多少
+plot(x, y, xlim = c(0, 1.3), ylim = c(0, 1.3), ylab = "", xlab = "", 
+     type = "l", main = "upper sum", bty = "n", 
+     xaxt = "n", yaxt = "n", col = 4, lwd = 2)
+u <- par("usr") # 控制坐標系的範圍:在起始和終止點多增加4%的區間
+arrows(x0 = u[1], y0 = u[3], x1 = u[2], y1 = u[3], code = 2, length = 0.08, 
+      xpd = TRUE) 
+arrows(x0 = u[1], y0 = u[3], x1 = u[1], y1 = u[4], code = 2, length = 0.08,
+      xpd = TRUE)
+# redefine and add ticks
+axis(1, at = seq(0,1, by = 0.25),
+     labels = NA  ,cex.axis=1,
+     font = 1, # font:label style
+     tck = 0.02) # tck:tick length(positive:inside graph; negative:outside graph)
+axis(2, at = seq(0,1, by = 0.5), 
+     labels = NA ,cex.axis=1,font=1, tck=0.02)
+axis(1, at = 0, labels = NA,cex.axis=1,font=1, tck=-0.06)
+axis(2, at = 0, labels = NA,cex.axis=1,font=1, tck=-0.06)
+# margin text
+mtext(c("0", "0.25","0.5", "0.75", "1"), side=1, line=0.05, font = 5,
+      at=c(-0.03, 0.25, 0.5, 0.75, 1))
+mtext(c("0.5","1"), side=2, line=0.2, font = 5,at=c(0.5, 1),
+      las = 1) # 座標文字水平
+mtext("x", side = 1, line = -0.5, at = 1.35, font = 8)
+mtext("y", side = 2, line = -0.1, at = 1.35, las = 1, font = 8)
+
+#同時畫四條水平線
+x1_grid <- c(0, 1/4, 1/2, 3/4)  # 線段起點x座標
+y1_grid <- c(1, 15/16, 3/4, 7/16)# 線段起點y座標
+x2_grid <- c(1/4, 1/2, 3/4, 1) # 線段終點x座標
+y2_grid <- c(1,15/16,3/4, 7/16) # 線段終點y座標
+segments(x1_grid, y1_grid, x2_grid, y2_grid, lwd = 2, col = 6)
+
+# 同時畫四條垂直線
+vx1_grid <- c(1/4, 1/2, 3/4, 1)  # 線段起點x座標
+vy1_grid <- c(1,15/16,3/4, 7/16)# 線段起點y座標
+vx2_grid <- c(1/4, 1/2, 3/4, 1) # 線段終點x座標
+vy2_grid <- 0 # 線段終點y座標
+segments(vx1_grid, vy1_grid, vx2_grid, vy2_grid, lwd = 2, col = 6)
+points(x1_grid, y1_grid, pch = 20,col = 6 , cex = 1.5, xpd = T)
+
+# fill transparent color by col = rgb()
+polygon(c(x, rev(x)),c(y, rep(0, length(x))), 
+        col = rgb(0.3, 0.3, 0.9, alpha = 0.25), 
+        border = NA)
+rect(xleft = c(0, 0.25,0.5,0.75), ybottom = 0, 
+     xright = c(0.25,0.5,0.75,1), ytop = c(1,15/16,3/4,7/16),
+     col = rgb(0.9,0.3,0.5,alpha =0.2), border = NA)
+
+# add text and math function
+# https://rpubs.com/kylewbrown/math-expressions
+text(0.35,0.43, labels = "R", cex = 1, font = 8)
+# change font of math equation
+windowsFonts(CambriaMath  = windowsFont("Cambria Math"))
+par(family = "CambriaMath")
+text(0.75,1.1,expression(y == 1 - x^2), cex = 1)
+text(0.05,1.05,"(0, 1)", font = 5)
+text(0.32,1.05,expression(paste("(", frac(1,4), " , ",frac(15,16), ")")))
+text(0.55,0.87,expression(paste("(", frac(1,2), " , ",frac(3,4), ")")))
+text(0.83,0.55,expression(paste("(", frac(3,4), " , ",frac(7,16), ")")))
+```
+
+### HW1
+```{r}
+x <- seq(-4,4,by = 0.0001)
+f <- function(x,alpha){
+  alpha*(((x^2-1)^2)^(1/3))
+}
+plot(x,f(x, alpha = 1), xlim = c(-4,4), ylim = c(-2,8), main = "example", xlab = "x", ylab = "f(x, alpha=1)",col = "blue", type = "l")
+lines(x,f(x, alpha = 2), col = "red")
+legend(-0.65, 7, legend = c(expression(alpha == 1), expression(alpha == 2)), col = c("blue", "red"),lty = 1, cex = 1)
+abline(h = 0, v = 0, col = "gray")
+
+
+```
+
+
+### HW2
+#### 完成下圖, 其中 H0 是一個 N(0, 1) and Ha 是一個 N(1, 1) distributions
+![](D:/Chang-web/graph/hypo.jpg)
+```{r}
+x <- seq(-5,5,by = 0.001)
+y1 <- dnorm(x, 0, 1)
+y2 <- dnorm(x, 1, 1)
+par(bg = 'cornsilk2')
+plot(x,y1,type = "l", lwd = 2, xlab = "", ylab = "",
+     main = "Statistical Power Plots, Textbook-style", 
+     xaxt = "n", yaxt = "n", frame.plot = F)
+lines(x,y2, type = "l",lwd = 2, col = "chocolate4")
+abline(v = 0.8, lty = 2, col = "black",lwd=2)
+x1 <- seq(-5,0.8, by = 0.001)
+polygon(c(x1,rev(x1)), 
+        c(dnorm(x1,1,1), rep(0, length(x1))), 
+        col = rgb(0.6, 0.3, 0, 0.5), border = NA)
+x2 <- seq(0.8, 5, by = 0.001)
+polygon(c(x2, rev(x2)),
+        c(dnorm(x2,1, 1), rev(dnorm(x2))),
+        col = rgb(0,0.6,0.7,0.3), border = NA)
+polygon(c(x2, rev(x2)), 
+        c(dnorm(x2), rep(0, length(x2))),
+        col = rgb(0,0.2,0.4,0.7), border = NA)
+text(c(0, 1.1),0.42, c(expression(H[0]), expression(H["a"])), xpd =T)
+arrows(-2, 0.15, 0.01, 0.05, code = 2, angle = 45, length = 0.08, lwd = 2)
+arrows(1.2, 0.05, 3, 0.2, code = 1, angle = 40, length = 0.08, lwd = 2)
+arrows(1.4, 0.25,2.5, 0.35, code = 1, angle = 30, length = 0.08, lwd = 2)
+text(c(-2.3, 3, 2.5), c(0.17,0.24,0.37), c(expression(beta), expression(frac(alpha, 2)), expression(1-beta)))
+```
+
+### HW3
+![](D:/Chang-web/graph/triangles.jpg)
+```{r}
+x <- c()
+y <- c()
+plot(x,y, xlim = c(-10,18), ylim = c(0,15), type = "n", main = "triangles", xlab = "", ylab = "")
+polygon(c(4,-2,-8), c(6,8,10), col = rgb(0.2,0.2,0.2,0.3), lty = 1)
+polygon(c(16,8,2),c(14,2,6),col = rgb(0.1,0.1,0.6,0.3) ,lty = 1)
+polygon(c(0,8,4),c(4,4,4+4*sqrt(3)),col = rgb(0.4,0.6,0.1,0.3) , lty = 1)
+polygon(c(-4,4,-2), c(2,6,8), col = rgb(0.6,0.1,0.4,0.5) ,lty = 1)
+polygon(c(12,8,2),c(9,2,1),col = rgb(0.3,0.8,0.1,0.6) , lty = 1)
+text(-7,10.5, "A")
+text(11,12,"B")
+text(4,11.5,"C")
+text(-5,2.6,"D")
+text(6,1,"E")
+
+```
+
+### HW4
+![](D:/Chang-web/graph/ins.jpg)
+```{r}
+theta <- seq(-pi,pi,by = 0.001)
+x <- function(theta){
+  16*(sin(theta))^3
+}
+y <- function(theta){
+  13*cos(theta) - 5*cos(2*theta) - 2*cos(3*theta) - cos(4*theta)
+}
+plot(x(theta), y(theta), type = "l", frame.plot = F, 
+     xaxt = "n", yaxt = "n",
+     xlim = c(-15,15), ylim = c(-17,14), xlab = "", ylab = "", col = "red")
+polygon(x(theta), y(theta), col = "red", border = NA)
+text(0, 1.5, "Mother's Day", col = "white", cex = 1)
+windowsFonts(MJ= windowsFont("Microsoft JhengHei"))
+par(family = "MJ")
+text(0,-3.5,"母親節快樂",col = "white", cex = 2, family = "MJ")
+text(0, -8.5, "May 10, 2020", col = "white", font = 1)
+
+```

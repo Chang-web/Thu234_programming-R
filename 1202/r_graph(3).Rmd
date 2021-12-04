@@ -1,0 +1,131 @@
+---
+title: "R_grapg(3)"
+author: "Chang"
+date: "2021/12/4"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+### exercise A-1
+```{r}
+x <- iris$Sepal.Length
+mat <- matrix(c(1,2,1,3), 2,2)
+layout(mat,widths = c(2,1), heights = c(2,1) )
+plot(x)
+hist(x)
+boxplot(x)
+```
+
+### exercise A-2
+```{r}
+x <- iris$Sepal.Length
+mat <- matrix(c(2,1,0,3), 2,2)
+layout(mat,widths = c(2,1), heights = c(1,2))
+plot(x)
+hist(x)
+boxplot(x)
+```
+
+### exercise B
+```{r}
+library(ggplot2)
+# mat1 <- matrix(c(0,1,0,2,3,4,0,5,0), 3,3)
+# layout(mat1, widths = c(1,2,1), heights = c(1,2,1))
+# x <- iris$Petal.Length
+# y <- iris$Sepal.Length
+# a <- as.data.frame(x)
+# boxplot(x, col = "white")
+# hist(y, col = "white",
+#      main = "Histogram of Sepal.Length",
+#      xlab = "Sepal.Length",
+#      ylab = "Frequency")
+# plot(y,x, xlab="Sepal.Length", ylab = "Petal.Length", col = iris$Species)
+# boxplot(y, horizontal = TRUE, col = "white")
+a <- ggplot(iris,aes(x = Petal.Length)) + 
+  geom_boxplot() + coord_flip() + xlab("") +
+    theme(
+   panel.background = element_rect(fill = "white" , color = "black"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.ticks.x.bottom = element_blank(),
+    axis.text.x.bottom =  element_blank())  
+
+b <- ggplot(iris,aes(x = Sepal.Length))+
+  geom_histogram(fill="white",color="black", bins = 8) + 
+  ylab("Frequency") + xlab("Sepal.Length") + theme_bw() +
+  ggtitle("Histogram of Sepal.Length") +
+  theme(
+     plot.background = element_blank(),
+     panel.grid.major = element_blank(),
+     panel.grid.minor = element_blank(),
+     panel.border = element_blank(),
+    axis.line.y.left = element_line(),
+    axis.line.x.bottom = element_line()) 
+
+c <- ggplot(iris, aes(x= Sepal.Length, y = Petal.Length, color = Species)) + 
+  geom_point() +
+  theme(
+   panel.background = element_rect(fill = "white" , color = "black"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+   legend.position = "none")
+
+d <- ggplot(iris,aes(x = Sepal.Length)) + 
+  geom_boxplot() + xlab("") +
+    theme(
+   panel.background = element_rect(fill = "white" , color = "black"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.ticks.y.left = element_blank(),
+    axis.text.y.left =  element_blank())  
+
+e <- ggplot(iris,aes(x = Petal.Length))+
+  geom_histogram(fill="white",color="black", bins = 12) + 
+  coord_flip() + 
+  ylab("") + xlab("") + theme_bw() +
+  theme(axis.line.x.bottom = element_line(),
+   axis.line.y.left = element_blank(),
+     plot.background = element_blank(),
+     panel.grid.major = element_blank(),
+     panel.grid.minor = element_blank(),
+     panel.border = element_blank(),
+     axis.ticks.y.left = element_blank(),
+     axis.text.y.left =  element_blank()) 
+library(cowplot)
+plot_grid(NULL, b , NULL, a,c,e,NULL, d, NULL, 
+          rel_widths = c(1,2,1),
+          rel_heights = c(1,2,1),
+          nrow = 3)
+```
+
+### exercise C
+```{r}
+boxplot(count ~ spray, data = InsectSprays, 
+        col = "lightgray")
+boxplot(iris[,c(3,4,1,2)], col = "white") # 對每一行變數畫盒狀圖，合併在一張圖中
+```
+
+### exercise D
+![](D:/Chang-web/graph/multi.jpg)
+```{r}
+colnames(iris) <- c("SL", "SW", "PL", "PW", "Species")
+par(mfrow = c(1,4))
+boxplot(iris$SL, col = "white", xlab = "Sepal.Length")
+boxplot(iris$SL ~ iris$Species, col = "white", ylab = "Sepal.Length", xlab = "")
+boxplot(iris[,c(1,2,3,4)], col = "white")
+boxplot(iris[,c(1,2,3,4)], horizontal = T, col = c("red","darkgreen" , "blue2", "cyan"))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

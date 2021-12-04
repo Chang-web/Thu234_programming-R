@@ -1,0 +1,143 @@
+---
+title: "1118_HW"
+author: "Chang"
+date: "2021/12/2"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+### exercise A
+```{r}
+x <- seq(0, 10, by = 0.01)
+plot(x, dchisq(x,3),
+     ylab = "Chisquare Density", xlab = " ",
+     type = "l",
+     ylim = c(0,0.25),
+     # bty: control box style
+     bty = "n", 
+     # remove all axes and labels
+     axes=FALSE
+     # xaxt="n",yaxt="n": only left and bottom borders
+     ) 
+# add y axis but no labels
+Axis(side=2, labels=FALSE)
+# add math equation in graph
+text(7, 0.1, expression(A == P(chi^2 >= x)))
+# add words in graph
+text(5, 0.03, "A")
+# add label in x axis
+axis(1, 4, "x", cex = 2, tick = T)
+axis(1, 0, "0", cex = 2, tick = T)
+# add lines to certain places in graph
+abline(h=-0.009)
+segments(x0 = 4, y0 = 0, x1 = 4, y1 = 0.11)
+segments(x0 = 0, y0 = 0, x1 = 10, y1 = 0)
+# fill in portion of the density plot from 5 to 10
+x1 <- seq(4,10) # create vector of x values
+y1 <- dchisq(x1, df = 3) # create vector of chi-square density values
+polygon(x = c(x1, rev(x1)), # x from 4 to 10 then back to 4
+        # y from chisq(4, df=3) to chisq(10, df=3) then y = 0 
+        y = c(y1, rep(0, length(y1))),  
+        density = 20, angle = 45, 
+        # no border line
+        # can also use a vertical white segment to hide the border:
+# segments(x0 = 10, y0 = 0, x1 = 10, y1 = dchisq(10, df = 4), col = "white")
+        border = NA) 
+```
+
+```{r}
+# https://r-charts.com/evolution/area-between-lines/
+
+# Grid of X-axis values
+x <- seq(0, 10, 0.01)
+
+# Data
+set.seed(1)
+y1 <- 2 * cos(x) + 8
+y2 <- 3 * sin(x) + 4
+
+# Lines
+plot(x, y1, type = "l",
+     ylim = c(1, 10), ylab = "y")
+lines(x, y2, type = "l", col = 2)
+
+# Area with shading lines
+polygon(c(x, rev(x)), c(y2, rev(y1)),
+        density = 10, angle = 45)
+```
+
+### exercise B
+```{r}
+# default colors in r:palette()
+x <- seq(-pi, pi, by = 0.07)
+plot(x, cos(x), xlim = c(-pi,pi), ylim =  c(-1.1, 1.8), 
+     ylab = " ", pch = 3, col = 4)
+lines(x, sin(x), type = "l",lty = 2,  col = 3)
+lines(x, tan(x), type = "b",pch = 4, col = 6)
+legend(-1.4, 1.8, c("sin", "cos", "tan"), col = c(3,4, 6),
+       text.col = "green4", lty = c(2, 0, 1), pch = c(NA, 3, 4),
+       merge = TRUE, # merge points and lines
+       bg = "gray90", cex = 0.8)
+```
+
+### HW1
+```{r}
+z <- seq(-4, 4, by = 0.01)
+plot(z, dnorm(z), type = "l",
+     main = "N(0,1)", ylim = c(0, 0.4), 
+     ylab = "dnorm(z)")
+segments(x0 = c(-2,2), y0 = -0.015, x1 = c(-2,2), y1 = 0.1)
+# add arrows
+# code1:arrow at start point
+# code2:arrow at end point
+# code3:arrows at both start and end points
+arrows(-0.5, dnorm(-2), -2,  dnorm(-2), length = 0.15)
+arrows( 0.5, dnorm(2), 2, dnorm(2), length = 0.15)
+text(0, 0.06, "95%")
+
+```
+
+### HW2
+```{r}
+x <- seq(-2*pi,2*pi,by = 0.01)
+# plot(x, cos(x), xlim = c(-6.3,6.3), ylim = c(-1, 1), ylab = "", main = "sin(x) and cos(x)",type = "l", col = "green")
+# lines(x, sin(x), col = "red")
+curve(expr = cos(x),from =  -2*pi, to = 2*pi, ylim = c(-1, 1), ylab = "", main = "sin(x) and cos(x)",type = "l", col = "green" )
+curve(expr = sin(x), col = "red", add = T)
+abline(h = 0, v = 0, col = "gray")
+text(-2*pi, -0.05, expression(-2*pi),cex = 0.8)
+text(-pi, -0.05, expression(-pi),cex = 0.8)
+text(0, -0.05, "0",cex = 0.8)
+text(pi, -0.05, expression(pi),cex = 0.8)
+text(2*pi, -0.05, expression(2*pi),cex = 0.8)
+legend(2.7,1, c("sin(x)", "cos(x)"),
+       lty = 1, col = c("red", "green"), cex = 0.8)
+```
+
+### HW3
+```{r}
+x <- seq(-3.5,3.5,0.01)
+y <- dnorm(x)
+plot(x, y, xlab = "", ylab = "density", 
+     main = "Normal Distribution", 
+     ylim = c(0,0.4), type = "l", xaxt = "n", col = "red", 
+     lwd = 2) # width of line
+Axis(side=1, labels=FALSE)
+axis(side = 1, at=c(-3:3), labels=c(expression(mu-3*sigma),expression(mu-2*sigma),expression(mu-sigma),expression(mu),expression(mu+sigma),expression(mu+2*sigma),expression(mu+3*sigma)))
+abline(v = c(-3:3), lty = 2, col = "gray")
+arrows(x0 = c(-3:-1), y0 = c(0.1,0.2,0.3), x1 = -0.5, y1 = c(0.1,0.2,0.3), 
+       code = 1, length = 0.1)
+arrows(x0 = 0.5, y0 = c(0.1,0.2,0.3), x1 = c(3:1), y1 = c(0.1,0.2,0.3),
+       code = 2, length = 0.1)
+text(0, c(0.3, 0.2, 0.1), c("68.26%", "95.44%", "99.74%"))
+
+
+
+```
+
+
+
+
+

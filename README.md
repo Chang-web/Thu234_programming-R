@@ -27,6 +27,21 @@
 ### W8 1104 Loop_repeat
   * [in_class](https://chang-web.github.io/Thu234_programming-R/1104/1104_repeat-and-next.html)
 ### W9 1111 MIDTERM
+  * [midterm](https://chang-web.github.io/Thu234_programming-R/1111/107208063.txt)
+### W10 1118 R_graph(1)
+  * [in_class](https://chang-web.github.io/Thu234_programming-R/1118/R_graph.R)
+  * [exercise](https://chang-web.github.io/Thu234_programming-R/1118/1118_HW.html)
+### W11 1125 R_graph(2)
+  * [in_class](https://chang-web.github.io/Thu234_programming-R/1125/R_graph(2).R)
+  * [exercise](https://chang-web.github.io/Thu234_programming-R/1125/1125_HW.html)
+### W12 1202 R_graph(3)
+  * [in_class](https://chang-web.github.io/Thu234_programming-R/1202/r_graph-3-.html)
+### W13
+
+### W14 
+
+### W15 report
+  * [team_5]
 
 
 
