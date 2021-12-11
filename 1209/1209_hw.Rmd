@@ -1,0 +1,101 @@
+---
+title: "1209_Data processing_hw"
+author: "Chang"
+date: "2021/12/12"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+### 1
+![](D:/Chang-web/graph/120901.jpg)
+```{r}
+# (a)
+library(readxl)
+covid <- read.csv("D://Chang-web/data/owid-covid-data.csv")
+head(covid,5)
+tail(covid,5)
+
+# (b)
+# covid資料中的date是character，需要先轉為Date的形式
+class(covid$date)
+covid$date <- as.Date(covid$date, "%Y-%m-%d")
+class(covid$date)
+# use subset to filter data 
+covid2108 <- subset(covid, format.Date(date, "%m")=="08" & format.Date(date, "%y")=="21")
+covid2108G <- subset(covid2108, location %in%  "Germany")
+mean(covid2108G$new_cases)
+covid2108UK <- subset(covid2108, location %in%  "United Kingdom")
+mean(covid2108UK$new_cases)
+covid2108US <- subset(covid2108, location %in%  "United States")
+mean(covid2108US$new_cases)
+```
+### 2
+![](D:/Chang-web/graph/120902.jpg)
+```{r}
+my.time <- strptime(c("08/01/2014 00:00:00", "12/31/2018 23:59:59"), "%m/%d/%Y %H:%M:%S")
+set.seed(12345)
+date.time <- sample(seq(from = my.time[1], to = my.time[2], by = 'hour'), 100, replace = T)
+items.quantity <- sample(0:100, 100, replace = T)
+sales <- data.frame(date.time, items.quantity)
+sales$date.time <- as.Date(sales$date.time,"%Y-%m-%d", tz = "")
+subsales <- subset(sales, format.Date(date.time, "%Y")=="2015")
+mean(subsales$items.quantity)
+```
+### 3
+![](D:/Chang-web/graph/120903.jpg)
+```{r}
+# 解決中文編碼問題: https://data.gov.tw/faqs/18765
+mrt <- read.csv("D://Chang-web/data/201803.csv", fileEncoding = "UTF-8-BOM")
+# (a)
+head(mrt, 3)
+tail(mrt, 3)
+
+# (b)
+mrtmon <- subset(mrt, 星期 %in%  "一")
+# 因為character資料的數字有","，需要將它移除才能轉換，以gsub()解決
+mrtmon$總運量 <- as.numeric(gsub(",","",mrtmon$總運量))
+mean(mrtmon$總運量)
+
+mrtsun <- subset(mrt, 星期 %in%  "日")
+mrtsun$總運量 <- as.numeric(gsub(",","",mrtsun$總運量))
+mean(mrtsun$總運量)
+
+
+```
+### 4
+![](D:/Chang-web/graph/12090401.jpg)
+![](D:/Chang-web/graph/12090402.jpg)
+
+```{r}
+# (a)
+set.seed(1)
+my.months <- sample(1:12, 50, replace = T)
+my.months.eng <- month.abb[my.months]
+
+# (b)
+dat <- as.data.frame(table(my.months))
+dat
+
+# (c)
+half <- dat[dat$my.months %in% c(7:12),]
+mean(half$Freq)
+
+# (d)
+my.months.eng.f <- as.data.frame(table(my.months.eng))
+res <- my.months.eng.f[my.months.eng.f$my.months.eng %in% c("May", "Jun", "Jul", "Aug"),]
+sum(res$Freq)
+```
+
+
+
+
+
+
+
+
+
+
+
+

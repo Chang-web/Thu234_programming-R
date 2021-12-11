@@ -36,7 +36,9 @@
   * [exercise](https://chang-web.github.io/Thu234_programming-R/1125/1125_HW.html)
 ### W12 1202 R_graph(3)
   * [in_class](https://chang-web.github.io/Thu234_programming-R/1202/r_graph-3-.html)
-### W13
+### W13 1209 Data_processing
+  * [in_class](https://chang-web.github.io/Thu234_programming-R/1209/dataprocessing.R)
+  * [exercsise](https://chang-web.github.io/Thu234_programming-R/1209/1209_hw.html)
 
 ### W14 
 
