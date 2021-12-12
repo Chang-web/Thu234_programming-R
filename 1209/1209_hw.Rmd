@@ -73,6 +73,7 @@ mean(mrtsun$總運量)
 set.seed(1)
 my.months <- sample(1:12, 50, replace = T)
 my.months.eng <- month.abb[my.months]
+my.months.eng
 
 # (b)
 dat <- as.data.frame(table(my.months))
@@ -82,15 +83,42 @@ dat
 half <- dat[dat$my.months %in% c(7:12),]
 mean(half$Freq)
 
-# (d)
+# (d) 目標:讓原資料的月份按月份大小，而非首字母排序
+# method 1 : order factor 
+# 這是正確做法，將資料轉為月份簡寫的因子向量再排序
 my.months.eng.f <- as.data.frame(table(my.months.eng))
+# 原資料情形
+str(my.months.eng.f)
+# month.abb是R內建的character，可以省去輸入定義月份的時間
+month.abb
+# 重新定義factor順序，方式是month.abb
+# ordered = T : order factor按月份大小排序(i.e. rank)
+my.months.eng.f$my.months.eng <- factor(my.months.eng.f$my.months.eng, 
+                                        levels = month.abb, ordered=TRUE)
+# order factor
+str(my.months.eng.f)
+# 將設定好的order factor帶回原資料
+my.months.eng.f <- my.months.eng.f[order(my.months.eng.f$my.months.eng), ]
+my.months.eng.f
+# 排序完成
+str(my.months.eng.f)
+
+# (d) 目標:讓原資料的月份按月份大小，而非首字母排序
+# method 2: match
+# 這個方式比較不正確，它只是將資料按照month.abb調換列順序，但實際上的factor並無重新定義，仍為首字母排序 (i.e. no rank)
+my.months.eng.f <- as.data.frame(table(my.months.eng))
+# 原資料情形
+str(my.months.eng.f)
+my.months.eng.f <- my.months.eng.f[order(match(my.months.eng.f$my.months.eng, month.abb)), ]
+my.months.eng.f
+# 雖然得到想要呈現的資料，但factor沒有改變，只是調換列順序
+str(my.months.eng.f)
+
+# (e)
+# 雖然(d)兩種作法有些差異，但不影響此題的計算結果
 res <- my.months.eng.f[my.months.eng.f$my.months.eng %in% c("May", "Jun", "Jul", "Aug"),]
 sum(res$Freq)
 ```
-
-
-
-
 
 
 

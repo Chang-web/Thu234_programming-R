@@ -597,8 +597,13 @@ mean(mrtsun$總運量)</code></pre>
 set.seed(1)
 my.months &lt;- sample(1:12, 50, replace = T)
 my.months.eng &lt;- month.abb[my.months]
-
-# (b)
+my.months.eng</code></pre>
+<pre><code>##  [1] &quot;Sep&quot; &quot;Apr&quot; &quot;Jul&quot; &quot;Jan&quot; &quot;Feb&quot; &quot;Jul&quot; &quot;Nov&quot; &quot;Feb&quot; &quot;Nov&quot; &quot;Mar&quot; &quot;Jan&quot; &quot;May&quot;
+## [13] &quot;May&quot; &quot;Oct&quot; &quot;Jun&quot; &quot;Oct&quot; &quot;Jul&quot; &quot;Sep&quot; &quot;May&quot; &quot;May&quot; &quot;Sep&quot; &quot;Sep&quot; &quot;May&quot; &quot;May&quot;
+## [25] &quot;Feb&quot; &quot;Oct&quot; &quot;Sep&quot; &quot;Dec&quot; &quot;Jan&quot; &quot;Apr&quot; &quot;Mar&quot; &quot;Jun&quot; &quot;Oct&quot; &quot;Oct&quot; &quot;Jun&quot; &quot;Apr&quot;
+## [37] &quot;Dec&quot; &quot;Apr&quot; &quot;Oct&quot; &quot;Dec&quot; &quot;Sep&quot; &quot;Jul&quot; &quot;Jun&quot; &quot;Sep&quot; &quot;Aug&quot; &quot;Dec&quot; &quot;Sep&quot; &quot;Jul&quot;
+## [49] &quot;Aug&quot; &quot;Jun&quot;</code></pre>
+<pre class="r"><code># (b)
 dat &lt;- as.data.frame(table(my.months))
 dat</code></pre>
 <pre><code>##    my.months Freq
@@ -618,8 +623,79 @@ dat</code></pre>
 half &lt;- dat[dat$my.months %in% c(7:12),]
 mean(half$Freq)</code></pre>
 <pre><code>## [1] 4.5</code></pre>
-<pre class="r"><code># (d)
+<pre class="r"><code># (d) 目標:讓原資料的月份按月份大小，而非首字母排序
+# method 1 : order factor 
+# 這是正確做法，將資料轉為月份簡寫的因子向量再排序
 my.months.eng.f &lt;- as.data.frame(table(my.months.eng))
+# 原資料情形
+str(my.months.eng.f)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    12 obs. of  2 variables:
+##  $ my.months.eng: Factor w/ 12 levels &quot;Apr&quot;,&quot;Aug&quot;,&quot;Dec&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
+##  $ Freq         : int  4 2 4 3 3 5 5 2 6 2 ...</code></pre>
+<pre class="r"><code># month.abb是R內建的character，可以省去輸入定義月份的時間
+month.abb</code></pre>
+<pre><code>##  [1] &quot;Jan&quot; &quot;Feb&quot; &quot;Mar&quot; &quot;Apr&quot; &quot;May&quot; &quot;Jun&quot; &quot;Jul&quot; &quot;Aug&quot; &quot;Sep&quot; &quot;Oct&quot; &quot;Nov&quot; &quot;Dec&quot;</code></pre>
+<pre class="r"><code># 重新定義factor順序，方式是month.abb
+# ordered = T : order factor按月份大小排序(i.e. rank)
+my.months.eng.f$my.months.eng &lt;- factor(my.months.eng.f$my.months.eng, 
+                                        levels = month.abb, ordered=TRUE)
+# order factor
+str(my.months.eng.f)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    12 obs. of  2 variables:
+##  $ my.months.eng: Ord.factor w/ 12 levels &quot;Jan&quot;&lt;&quot;Feb&quot;&lt;&quot;Mar&quot;&lt;..: 4 8 12 2 1 7 6 3 5 11 ...
+##  $ Freq         : int  4 2 4 3 3 5 5 2 6 2 ...</code></pre>
+<pre class="r"><code># 將設定好的order factor帶回原資料
+my.months.eng.f &lt;- my.months.eng.f[order(my.months.eng.f$my.months.eng), ]
+my.months.eng.f</code></pre>
+<pre><code>##    my.months.eng Freq
+## 5            Jan    3
+## 4            Feb    3
+## 8            Mar    2
+## 1            Apr    4
+## 9            May    6
+## 7            Jun    5
+## 6            Jul    5
+## 2            Aug    2
+## 12           Sep    8
+## 11           Oct    6
+## 10           Nov    2
+## 3            Dec    4</code></pre>
+<pre class="r"><code># 排序完成
+str(my.months.eng.f)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    12 obs. of  2 variables:
+##  $ my.months.eng: Ord.factor w/ 12 levels &quot;Jan&quot;&lt;&quot;Feb&quot;&lt;&quot;Mar&quot;&lt;..: 1 2 3 4 5 6 7 8 9 10 ...
+##  $ Freq         : int  3 3 2 4 6 5 5 2 8 6 ...</code></pre>
+<pre class="r"><code># (d) 目標:讓原資料的月份按月份大小，而非首字母排序
+# method 2: match
+# 這個方式比較不正確，它只是將資料按照month.abb調換列順序，但實際上的factor並無重新定義，仍為首字母排序 (i.e. no rank)
+my.months.eng.f &lt;- as.data.frame(table(my.months.eng))
+# 原資料情形
+str(my.months.eng.f)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    12 obs. of  2 variables:
+##  $ my.months.eng: Factor w/ 12 levels &quot;Apr&quot;,&quot;Aug&quot;,&quot;Dec&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
+##  $ Freq         : int  4 2 4 3 3 5 5 2 6 2 ...</code></pre>
+<pre class="r"><code>my.months.eng.f &lt;- my.months.eng.f[order(match(my.months.eng.f$my.months.eng, month.abb)), ]
+my.months.eng.f</code></pre>
+<pre><code>##    my.months.eng Freq
+## 5            Jan    3
+## 4            Feb    3
+## 8            Mar    2
+## 1            Apr    4
+## 9            May    6
+## 7            Jun    5
+## 6            Jul    5
+## 2            Aug    2
+## 12           Sep    8
+## 11           Oct    6
+## 10           Nov    2
+## 3            Dec    4</code></pre>
+<pre class="r"><code># 雖然得到想要呈現的資料，但factor沒有改變，只是調換列順序
+str(my.months.eng.f)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    12 obs. of  2 variables:
+##  $ my.months.eng: Factor w/ 12 levels &quot;Apr&quot;,&quot;Aug&quot;,&quot;Dec&quot;,..: 5 4 8 1 9 7 6 2 12 11 ...
+##  $ Freq         : int  3 3 2 4 6 5 5 2 8 6 ...</code></pre>
+<pre class="r"><code># (e)
+# 雖然(d)兩種作法有些差異，但不影響此題的計算結果
 res &lt;- my.months.eng.f[my.months.eng.f$my.months.eng %in% c(&quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;),]
 sum(res$Freq)</code></pre>
 <pre><code>## [1] 18</code></pre>
