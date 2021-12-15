@@ -27,21 +27,34 @@ hist(x)
 boxplot(x)
 ```
 
-### exercise B
+### exercise B(TA)
+```{r}
+mat1 <- matrix(c(0,1,0,2,3,4,0,5,0), 3,3)
+layout(mat1, widths = c(2,3,2), heights = c(2,3,2))
+x <- iris$Petal.Length
+y <- iris$Sepal.Length
+a <- as.data.frame(x)
+boxplot(x, col = "white")
+hist(y, col = "white",
+     main = "Histogram of Sepal.Length",
+     xlab = "Sepal.Length",
+     ylab = "Frequency")
+plot(y,x, xlab="Sepal.Length", ylab = "Petal.Length", col = iris$Species, pch = 16)
+boxplot(y, horizontal = TRUE, col = "white")
+#https://stackoverflow.com/questions/11022675/rotate-histogram-in-r-or-overlay-a-density-in-a-barplot
+# 我們只想要圖片的counts，不希望看到圖，設定plot = F
+k <- hist(iris$Petal.Length, plot = F) 
+barplot(k$counts, axes=TRUE, xlim=c(0, max(k$counts,iris$Sepal.Length)),
+        space=0, # 讓bar的間距 = 0，看起來會像histogram
+        horiz=TRUE, col = "white")
+
+```
+
+
+### exercise B(ggplot)
 ```{r}
 library(ggplot2)
-# mat1 <- matrix(c(0,1,0,2,3,4,0,5,0), 3,3)
-# layout(mat1, widths = c(1,2,1), heights = c(1,2,1))
-# x <- iris$Petal.Length
-# y <- iris$Sepal.Length
-# a <- as.data.frame(x)
-# boxplot(x, col = "white")
-# hist(y, col = "white",
-#      main = "Histogram of Sepal.Length",
-#      xlab = "Sepal.Length",
-#      ylab = "Frequency")
-# plot(y,x, xlab="Sepal.Length", ylab = "Petal.Length", col = iris$Species)
-# boxplot(y, horizontal = TRUE, col = "white")
+# ggplot把圖表命名後，就不會顯示了
 a <- ggplot(iris,aes(x = Petal.Length)) + 
   geom_boxplot() + coord_flip() + xlab("") +
     theme(
