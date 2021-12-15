@@ -1,7 +1,7 @@
 ---
-title: "R_grapg(3)"
+title: "R_graph(3)"
 author: "Chang"
-date: "2021/12/4"
+date: "2021/12/15"
 output: 
   html_document:
     toc: true
@@ -27,7 +27,8 @@ hist(x)
 boxplot(x)
 ```
 
-### exercise B(TA)
+
+### exercise B
 ```{r}
 mat1 <- matrix(c(0,1,0,2,3,4,0,5,0), 3,3)
 layout(mat1, widths = c(2,3,2), heights = c(2,3,2))
@@ -50,6 +51,27 @@ barplot(k$counts, axes=TRUE, xlim=c(0, max(k$counts,iris$Sepal.Length)),
 
 ```
 
+### exercise B(TA)
+```{r}
+x = iris
+yhist <- hist(x$Petal.Length,plot = F)
+# 直接令矩陣，沒有的部分用空圖填滿
+mat1 <- matrix(c(seq(1,9,1)), 3, 3,byrow=TRUE)
+layout(mat1,widths = c(2,3,2),heights = c(2,3,2))
+plot.new() # NULL graph
+hist(x$Sepal.Length, col = "white",
+     main = "Histogram of Sepal.Length", xlab = "Sepal.Length")
+plot.new()
+boxplot(x$Sepal.Length, col = "white")
+plot(x$Sepal.Length,x$Petal.Length,col = x$Species, xlab="Sepal.Length", ylab = "Petal.Length",pch = 16)
+barplot(yhist$counts, axes=TRUE, 
+        xlim=c(0, max(yhist$counts,x$Sepal.Length)),
+        space=0, horiz=TRUE, col = "white")
+plot.new()
+boxplot(x$Sepal.Length, horizontal=TRUE, col = "white")
+plot.new()
+
+```
 
 ### exercise B(ggplot)
 ```{r}
